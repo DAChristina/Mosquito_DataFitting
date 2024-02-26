@@ -13,7 +13,7 @@ setwd(wd_R_mosquitoes_Reference)
 library(tidyverse)
 library(readxl)
 
-dat <- read_excel('Mosquito Mathematical Models_15.01.2024_DC.xlsx') %>% 
+dat <- read_excel('Mosquito_EstablishedInfection_Data.xlsx') %>% 
   # view() %>% 
   glimpse()
 
