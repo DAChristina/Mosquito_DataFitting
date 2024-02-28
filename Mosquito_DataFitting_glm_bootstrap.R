@@ -7,7 +7,6 @@
 # dat_sel$Mosquito_larvae_infected_proportion_fromtotaldissected
 # dat_sel$mf_mean_arithmetic_pertotaldissectedmosquito
 # dat_sel$mfE_mean_calculated
-# dat_sel$Larvae_mean_calculated
 
 # 1. Data preparation ##########################################################
 wd_R_mosquitoes_Reference = "/home/ron/Downloads/Mosquito_DataFitting-main"
@@ -65,6 +64,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   fit <- glm(y ~ x, family = binomial(link = "logit"),
              weights = AllMosq)
   stat.obs <- coef(fit)
+  sum.all <- summary(fit)
+  std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
   
   # Bootstrap function
   bootFun <- function() {
@@ -87,7 +88,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   return(list(
     confidence.interval = cbind(lower = confidence.interval[1,], 
                                 estimate = stat.obs, 
-                                upper = confidence.interval[2,]),
+                                upper = confidence.interval[2,],
+                                stdError = std.Err), # bind that pain-in-the ass Std.Err
     bootStats = stat.boot
   ))
 }
@@ -143,6 +145,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   fit <- glm(y ~ x, family = binomial(link = "logit"),
              weights = AllMosq)
   stat.obs <- coef(fit)
+  sum.all <- summary(fit)
+  std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
   
   # Bootstrap function
   bootFun <- function() {
@@ -165,7 +169,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   return(list(
     confidence.interval = cbind(lower = confidence.interval[1,], 
                                 estimate = stat.obs, 
-                                upper = confidence.interval[2,]),
+                                upper = confidence.interval[2,],
+                                stdError = std.Err), # bind that pain-in-the ass Std.Err
     bootStats = stat.boot
   ))
 }
@@ -220,6 +225,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   fit <- glm(y ~ x, family = binomial(link = "logit"),
              weights = AllMosq)
   stat.obs <- coef(fit)
+  sum.all <- summary(fit)
+  std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
   
   # Bootstrap function
   bootFun <- function() {
@@ -242,7 +249,8 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   return(list(
     confidence.interval = cbind(lower = confidence.interval[1,], 
                                 estimate = stat.obs, 
-                                upper = confidence.interval[2,]),
+                                upper = confidence.interval[2,],
+                                stdError = std.Err), # bind that pain-in-the ass Std.Err
     bootStats = stat.boot
   ))
 }
