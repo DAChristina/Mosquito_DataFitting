@@ -325,3 +325,57 @@ plot(dat_sel$Larvae_mean_calculated, (dat_sel$Mosquito_larvae_infected_count/dat
      col = palette[as.character(dat_sel$Mosquito_species)])
 
 par(mfrow = c(1,1))
+
+
+# Some basic stats #############################################################
+dat_anal <- dat_sel %>% 
+  select(Reference, Mosquito_species, Mosquito_larvae_infected_proportion_fromtotaldissected, Mosquito_totaldissected, Mosquito_larvae_infected_count, mfE_mean_calculated) %>% 
+  filter(!is.na(Mosquito_larvae_infected_proportion_fromtotaldissected) & Mosquito_larvae_infected_proportion_fromtotaldissected != "not_analysed",
+         !is.na(mfE_mean_calculated) & mfE_mean_calculated != "not_analysed") %>%
+  mutate(Unique_ID = row_number()) %>% 
+  # view() %>% 
+  glimpse()
+
+# To simplify my life a bit
+y <- dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected
+x <- dat_anal$mfE_mean_calculated
+AllMosq <- dat_anal$Mosquito_totaldissected
+
+summary(dat_anal)
+
+dat_anal_numb <- dat_anal %>% 
+  select(Mosquito_larvae_infected_proportion_fromtotaldissected, Mosquito_totaldissected, Mosquito_larvae_infected_count, mfE_mean_calculated) %>% 
+  # view() %>% 
+  glimpse()
+
+cor(dat_anal_numb)
+pairs(dat_anal_numb)
+
+
+hist(x, main = "Histogram of expected average of ingested mfE", xlab = "Expected average of ingested mfE")
+hist(y, main = "Histogram of mosquito proportion with established infection", xlab = "Mosquito proportion with established infection")
+hist(AllMosq, main = "Histogram of total dissected mosquitoes", xlab = "Total dissected mosquitoes")
+
+
+qqnorm(x)
+qqline(x)
+
+qqnorm(y)
+qqline(y)
+
+shapiro.test(x) # Not normal
+shapiro.test(y) # Not normal
+
+# Density plot???
+plot(density(x), main = "Density Plot of Response Variable")
+plot(density(y), main = "Density Plot of Predictor Variable")
+
+dat_analSummary <- dat_anal %>% 
+  mutate(mean_mfE = mean(mfE_mean_calculated),
+         var_mfE = var(mfE_mean_calculated),
+         PearsonChiSq_mfE = (var_mfE-mean_mfE)/mean_mfE, # mfE shows overdispersion
+         mean_Mosq = mean(Mosquito_larvae_infected_proportion_fromtotaldissected),
+         var_Mosq = var(Mosquito_larvae_infected_proportion_fromtotaldissected),
+         PearsonChiSq_Mosq = (var_Mosq-mean_Mosq)/mean_Mosq) %>% # Mosq shows underdispersion
+  view() %>% 
+  glimpse()
