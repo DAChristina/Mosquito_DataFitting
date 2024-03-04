@@ -58,11 +58,11 @@ dat_anal <- dat_sel %>%
 y <- dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected
 x <- dat_anal$mfE_mean_calculated
 AllMosq <- dat_anal$Mosquito_totaldissected
+AllPos <- dat_anal$Mosquito_larvae_infected_count
 
 # THE BOOTSTRAP! ###############################################################
 bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
-  fit <- glm(y ~ x, family = binomial(link = "logit"),
-             weights = AllMosq)
+  fit <- glm(cbind(AllPos, AllMosq - AllPos) ~ x, family = binomial(link = "logit"))
   stat.obs <- coef(fit)
   sum.all <- summary(fit)
   std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
@@ -70,8 +70,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   # Bootstrap function
   bootFun <- function() {
     sampled <- sample(1:length(y), size = length(y), replace = TRUE) # Replacement
-    fit_sampled <- glm(y[sampled] ~ x[sampled], family = binomial(link = "logit"),
-                       weights = AllMosq)
+    fit_sampled <- glm(cbind(AllPos[sampled], AllMosq[sampled] - AllPos[sampled]) ~ x[sampled], family = binomial(link = "logit"))
     
     coef(fit_sampled)
   }
@@ -95,7 +94,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
 }
 
 # Call bootstrap with ORI data
-result <- bootstrapGLM(y = dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected, 
+result <- bootstrapGLM(y = cbind(AllPos, AllMosq - AllPos), 
                        x = dat_anal$mfE_mean_calculated, 
                        repetitions = 1000, 
                        confidence.level = 0.95)
@@ -139,11 +138,11 @@ dat_anal <- dat_sel %>%
 y <- dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected
 x <- dat_anal$mfE_mean_calculated
 AllMosq <- dat_anal$Mosquito_totaldissected
+AllPos <- dat_anal$Mosquito_larvae_infected_count
 
 # THE BOOTSTRAP! ###############################################################
 bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
-  fit <- glm(y ~ x, family = binomial(link = "logit"),
-             weights = AllMosq)
+  fit <- glm(cbind(AllPos, AllMosq - AllPos) ~ x, family = binomial(link = "logit"))
   stat.obs <- coef(fit)
   sum.all <- summary(fit)
   std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
@@ -151,8 +150,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   # Bootstrap function
   bootFun <- function() {
     sampled <- sample(1:length(y), size = length(y), replace = TRUE) # Replacement
-    fit_sampled <- glm(y[sampled] ~ x[sampled], family = binomial(link = "logit"),
-                       weights = AllMosq)
+    fit_sampled <- glm(cbind(AllPos[sampled], AllMosq[sampled] - AllPos[sampled]) ~ x[sampled], family = binomial(link = "logit"))
     
     coef(fit_sampled)
   }
@@ -176,7 +174,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
 }
 
 # Call bootstrap with ORI data
-result <- bootstrapGLM(y = dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected, 
+result <- bootstrapGLM(y = cbind(AllPos, AllMosq - AllPos), 
                        x = dat_anal$mfE_mean_calculated, 
                        repetitions = 1000, 
                        confidence.level = 0.95)
@@ -219,11 +217,12 @@ dat_anal <- dat_sel %>%
 y <- dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected
 x <- dat_anal$mfE_mean_calculated
 AllMosq <- dat_anal$Mosquito_totaldissected
+AllPos <- dat_anal$Mosquito_larvae_infected_count
 
 # THE BOOTSTRAP! ###############################################################
+# THE BOOTSTRAP! ###############################################################
 bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
-  fit <- glm(y ~ x, family = binomial(link = "logit"),
-             weights = AllMosq)
+  fit <- glm(cbind(AllPos, AllMosq - AllPos) ~ x, family = binomial(link = "logit"))
   stat.obs <- coef(fit)
   sum.all <- summary(fit)
   std.Err <- sum.all$coefficients[, "Std. Error"] # that pain-in-the ass Std.Err coz examples only calculate CI
@@ -231,8 +230,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
   # Bootstrap function
   bootFun <- function() {
     sampled <- sample(1:length(y), size = length(y), replace = TRUE) # Replacement
-    fit_sampled <- glm(y[sampled] ~ x[sampled], family = binomial(link = "logit"),
-                       weights = AllMosq)
+    fit_sampled <- glm(cbind(AllPos[sampled], AllMosq[sampled] - AllPos[sampled]) ~ x[sampled], family = binomial(link = "logit"))
     
     coef(fit_sampled)
   }
@@ -256,7 +254,7 @@ bootstrapGLM <- function(y, x, repetitions, confidence.level = 0.95) {
 }
 
 # Call bootstrap with ORI data
-result <- bootstrapGLM(y = dat_anal$Mosquito_larvae_infected_proportion_fromtotaldissected, 
+result <- bootstrapGLM(y = cbind(AllPos, AllMosq - AllPos), 
                        x = dat_anal$mfE_mean_calculated, 
                        repetitions = 1000, 
                        confidence.level = 0.95)
